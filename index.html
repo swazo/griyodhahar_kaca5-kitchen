@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<title>Closing Kitchen</title>
+
+
+<style>
+
+.qty-wrap{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:5px;
+}
+
+.qty{
+  width:70px;
+  text-align:center;
+}
+
+.plus,
+.minus{
+  width:35px;
+  height:35px;
+  border:none;
+  border-radius:8px;
+  background:#16a34a;
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+}
+
+*{
+
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Poppins,sans-serif;
+
+}
+
+
+body{
+
+background:#f5f5f5;
+
+padding:20px;
+
+}
+
+
+.card{
+
+max-width:1000px;
+
+margin:auto;
+
+background:white;
+
+padding:25px;
+
+border-radius:20px; 
+
+box-shadow:
+0 10px 30px rgba(
+0,0,0,.08
+);
+
+}
+
+
+h2{
+
+text-align:center;
+
+margin-bottom:25px;
+
+}
+
+
+.top{
+
+display:grid;
+
+grid-template-columns:
+1fr 1fr 1fr;
+
+gap:15px;
+
+margin-bottom:25px;
+
+}
+
+
+@media(max-width:700px){
+
+.top{
+
+grid-template-columns:
+1fr;
+
+}
+
+}
+
+
+input,
+select{
+
+padding:12px;
+
+width:100%;
+
+border:
+
+1px solid #ddd;
+
+border-radius:10px;
+
+}
+
+
+table{
+
+width:100%;
+
+border-collapse:
+collapse;
+
+}
+
+
+th{
+
+background:#222;
+
+color:white;
+
+padding:12px;
+
+}
+
+
+td{
+
+padding:10px;
+
+border-bottom:
+
+1px solid #eee;
+
+text-align:center;
+
+}
+
+
+.qty{
+
+width:90px;
+
+}
+
+
+button{
+
+width:100%;
+
+padding:15px;
+
+background:
+
+#16a34a;
+
+color:white;
+
+border:none;
+
+border-radius:12px;
+
+font-size:16px;
+
+margin-top:20px;
+
+cursor:pointer;
+
+}
+
+
+button:disabled{
+
+opacity:.6;
+
+}
+
+</style>
+</head>
+
+<body>
+<div class="card">
+<h2>🍹 Closing Bartender</h2>
+
+<div class="top">
+<div>
+	<label>Tanggal</label>
+	<input type="date" id="tanggal">
+</div>
+
+<div>
+	<label>Shift</label>
+	<select id="shift">
+		<option value="">
+			Pilih Shift
+		</option>
+			<option>Shift 1</option>
+			<option>Shift 2</option>
+	</select>
+</div>
+
+	<div>
+	<label>Nama Petugas</label>
+	<input id="petugas" placeholder="Masukkan nama">
+	</div>
+</div>
+
+<table>
+
+
+<thead>
+
+<tr>
+
+<thead>
+<tr>
+<th>Barang</th>
+<th>Satuan</th>
+<th>Keluar</th>
+</tr>
+</thead>
+
+
+</tr>
+
+</thead>
+
+
+
+<tbody id="listBarang" >
+</tbody>
+</table>
+<button
+
+id="btnSimpan"
+
+onclick=
+"simpan()"
+
+>
+
+💾 Simpan Closing
+
+</button>
+
+
+
+</div>
+
+
+
+
+<script>
+
+document.getElementById("tanggal").value =
+new Date().toISOString().split("T")[0];
+
+
+const SCRIPT_URL= "https://script.google.com/macros/s/AKfycby0uXUuDjDDwXKkj2C2cbXwboCK-TvKjFIkjqgRT-c941CPgWJ6iHmV7pi_aGE0QR37/exec";
+
+const barang=[
+{nama:"AYAM 0.9KG", satuan:"ekor"},
+{nama:"AYAM 1.1KG", satuan:"ekor"},
+{nama:"BEBEK 1.4KG", satuan:"ekor"},
+{nama:"PAHA AYAM BONELESS", satuan:"pack"},
+{nama:"DORI FILLET", satuan:"pack"},
+{nama:"JAMUR", satuan:"PACK"}
+{nama:"IKAN MAS GORENG", satuan:"EKOR"},
+{nama:"IKAN MAS HOTPLATE", satuan:"EKOR"},
+{nama:"IKAN NILA GORENG", satuan:"EKOR"},
+{nama:"IKAN NILA HOTPLATE", satuan:"EKOR"},
+{nama:"IKAN LELE", satuan:" EKOR "},
+{nama:" IKAN GURAME ", satuan:" EKOR "},
+{nama:" IKAN LELE ", satuan:" EKOR "}
+
+];
+
+
+
+let html="";
+
+
+barang.forEach((b,i)=>{
+  html+=`
+    <tr>
+      <td>${b.nama}</td>
+      <td>${b.satuan}</td>
+      <td>
+  <div class="qty-wrap">
+    <button type="button" class="minus" onclick="kurang(${i})">−</button>
+
+   <input
+type="tel"
+inputmode="numeric"
+pattern="[0-9]*"
+      min="0"
+      value="0"
+      id="qty${i}"
+      class="qty"
+      inputmode="numeric"
+    >
+
+    <button type="button" class="plus" onclick="tambah(${i})">+</button>
+  </div>
+</td>
+    </tr>
+  `;
+});
+
+
+document.getElementById(
+
+"listBarang"
+
+).innerHTML=
+
+html;
+
+
+
+
+
+
+async function simpan(){
+let btn=
+document.getElementById("btnSimpan");
+
+if(!document.getElementById("tanggal").value){
+  kembaliKeAtas("tanggal","Isi tanggal");
+  return;
+}
+
+if(!document.getElementById("shift").value){
+  kembaliKeAtas("shift","Pilih shift");
+  return;
+}
+
+if(!document.getElementById("petugas").value){
+  kembaliKeAtas("petugas","Isi nama petugas");
+  return;
+}
+
+let barangTerisi =
+barang.map((b,i)=>({
+
+nama: b.nama,
+satuan: b.satuan,
+
+qty:
+parseInt(
+document.getElementById(
+`qty${i}`
+).value
+)||0
+
+}))
+.filter(
+item=>
+item.qty>0
+);
+
+
+
+
+if(
+
+barangTerisi.length==0
+
+){
+
+alert(
+
+"Isi minimal 1 qty"
+
+);
+
+return;
+
+}
+
+
+
+let data={
+
+
+tanggal:
+
+document.getElementById(
+
+"tanggal"
+
+).value,
+
+
+shift:
+
+document.getElementById(
+
+"shift"
+
+).value,
+
+
+petugas:
+
+document.getElementById(
+
+"petugas"
+
+).value,
+
+
+barang:
+
+barangTerisi
+
+
+};
+
+
+
+btn.disabled=true;
+
+
+btn.innerHTML=
+
+"⏳ Menyimpan...";
+
+
+
+
+try{
+
+await fetch(
+  SCRIPT_URL,
+  {
+    method:"POST",
+    body:JSON.stringify(data),
+    headers:{
+      "Content-Type":"text/plain;charset=utf-8"
+    },
+    mode:"no-cors"
+  }
+);
+
+alert("Data berhasil dikirim");
+
+btn.innerHTML="✅ Berhasil";
+
+
+setTimeout(()=>{
+
+
+location.reload();
+
+
+},1000);
+
+
+
+}catch(err){
+
+
+alert(
+
+"Gagal\n"+
+
+err.message
+
+);
+
+
+btn.disabled=false;
+
+
+btn.innerHTML=
+
+"💾 Simpan Closing";
+
+
+}
+
+
+
+}
+
+function tambah(i){
+  const el=document.getElementById(`qty${i}`);
+  el.value=parseInt(el.value||0)+1;
+}
+
+function kurang(i){
+  const el=document.getElementById(`qty${i}`);
+  let val=parseInt(el.value||0)-1;
+  if(val<0) val=0;
+  el.value=val;
+}
+
+function kembaliKeAtas(id,pesan){
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+  setTimeout(()=>{
+    document.getElementById(id).focus();
+  },300);
+
+  alert(pesan);
+
+}
+
+</script>
+
+</body>
+</html>
