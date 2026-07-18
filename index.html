@@ -286,14 +286,15 @@ const barang=[
 {nama:"AYAM 1.1KG", satuan:"ekor"},
 {nama:"BEBEK 1.4KG", satuan:"ekor"},
 {nama:"PAHA AYAM BONELESS", satuan:"pack"},
-{nama:" AYAM CINCANG ", satuan:" ekor "},
 {nama:" AYAM KATSU ", satuan:" pack "},
+{nama:" AYAM CINCANG ", satuan:" ekor "},
 {nama:" AYAM PAHE ", satuan:"ekor"},
 {nama:" AYAM CRISPY ", satuan:"ekor "},	
 {nama:" AYAM UNGKEP ", satuan:" ekor "},
 {nama:" AYAM UTUH ", satuan:"ekor "},
 {nama:"DORI FILLET", satuan:"pack"},
-{nama:"JAMUR", satuan:"PACK"},
+{nama:"JAMUR (pack)", satuan:"pack"},
+{nama:"JAMUR (kg)", satuan:"kg"},
 {nama:"IKAN MAS GORENG", satuan:"EKOR"},
 {nama:"IKAN MAS HOTPLATE", satuan:"EKOR"},
 {nama:"IKAN NILA GORENG", satuan:"EKOR"},
@@ -303,22 +304,32 @@ const barang=[
 {nama:" IKAN LELE ", satuan:" EKOR "},
 {nama:" CUMI ", satuan:" PACK "},	
 {nama:" CUMI FROZEN ", satuan:" PACK "},
-{nama:" UDANG KRISPI ", satuan:" PACK "},
-{nama:" UDANG GAMMIK ", satuan:" PACK "},
-{nama:" BEEF BELLY ", satuan:" PACK "},
+{nama:" UDANG KRISPI (pack) ", satuan:" pack "},
+{nama:" UDANG KRISPI (kg) ", satuan:" kg "},
+{nama:" UDANG GAMMIK (pack) ", satuan:" pack "},
+{nama:" UDANG GAMMIK (kg) ", satuan:" (kg) "},
+{nama:" BEEF BELLY (pack) ", satuan:" PACK "},
+{nama:" BEEF BELLY (box)", satuan:" box "},
 {nama:" MIE KUNING 1KG ", satuan:" BUNGKUS "},
 {nama:" KWETIAW ", satuan:" BUNGKUS "},
-{nama:" IKAN BAWIS ", satuan:" PORSI "},
+{nama:" IKAN BAWIS (porsi) ", satuan:" PORSI "},
+{nama:" IKAN BAWIS (kg) ", satuan:" kg "},
 {nama:" PEMPEK ", satuan:" PACK "},
 {nama:" PISANG ", satuan:" SISIR "},
-{nama:" JAGUNG FROZEN ", satuan:" PACK "},
-{nama:" SINGKONG ", satuan:" PACK "},
+{nama:" Banana Roll ", satuan:" porsi "},
+{nama:" Pisang Keju ", satuan:" porsi "},
+{nama:" JAGUNG FROZEN (porsi) ", satuan:" porsi "},
+{nama:" JAGUNG FROZEN (pack) ", satuan:" PACK "},
+{nama:" SINGKONG (pack) ", satuan:" PACK "},
+{nama:" SINGKONG (kg) ", satuan:" kg "},
 {nama:" DAGING BURGER ", satuan:" PACK "},
 {nama:" ROTI BURGER ", satuan:" PACK "},
 {nama:" MIX VEGETABLES ", satuan:" PACK "},
 {nama:" CANAI ", satuan:" PACK "},
-{nama:" KENTANG FROZEN ", satuan:" PACK "},
-{nama:" BROKOLI FROZEN ", satuan:" PACK "},
+{nama:" KENTANG FROZEN (porsi) ", satuan:" porsi "},
+	{nama:" KENTANG FROZEN (pack) ", satuan:" PACK "},
+{nama:" BROKOLI FROZEN (porsi) ", satuan:" porsi "},
+	{nama:" BROKOLI FROZEN (pack) ", satuan:" PACK "},
 {nama:" SOHUN ", satuan:" PACK "},
 {nama:" TEPUNG LENCANA MERAH ", satuan:" KARUNG"},
 {nama:" TEPUNG ROTI ", satuan:" KARUNG"},
@@ -377,10 +388,7 @@ const barang=[
 {nama:" BERAS ", satuan:" KARUNG "}	
 ];
 
-
-
 let html="";
-
 
 barang.forEach((b,i)=>{
   html+=`
@@ -417,11 +425,6 @@ document.getElementById(
 ).innerHTML=
 
 html;
-
-
-
-
-
 
 async function simpan(){
 let btn=
